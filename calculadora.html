@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Riesgo de UPP - EMINA y Braden Q</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
+    h1, h2 { color: #333; }
+    .container { background: white; padding: 20px; border-radius: 10px; max-width: 800px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .form-section { margin-bottom: 30px; display: none; }
+    label { display: block; margin-top: 10px; font-family: 'Times New Roman', serif; font-weight: bold; }
+    select { width: 100%; padding: 5px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .result { margin-top: 20px; font-weight: bold; padding: 10px; border-radius: 5px; }
+    .low { background-color: #d4edda; color: #155724; }
+    .moderate { background-color: #fff3cd; color: #856404; }
+    .high { background-color: #f8d7da; color: #721c24; }
+    .none { background-color: #155724; color: #ffffff; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Escalas de Riesgo de Úlceras por Presión</h1>
+
+  <label style="font-weight: normal;">Selecciona la escala que deseas utilizar:</label>
+  <select id="selectorEscala" onchange="mostrarEscala()">
+    <option value="">-- Seleccionar --</option>
+    <option value="braden">Escala BRADEN Q</option>
+    <option value="emina">Escala EMINA</option>
+  </select>
+
+  <div class="form-section" id="seccion-emina">
+    <h2>Escala EMINA</h2>
+    <form id="emina-form">
+      <label><strong>Estado mental:</strong>
+        <select name="estado_mental">
+          <option value="0">Orientado</option>
+          <option value="1">Desorientado</option>
+          <option value="2">Letargo o hipercinético</option>
+          <option value="3">Comatoso</option>
+        </select>
+      </label>
+      <label><strong>Movilidad:</strong>
+        <select name="movilidad">
+          <option value="0">Completa</option>
+          <option value="1">Ligeramente limitada</option>
+          <option value="2">Limitación importante</option>
+          <option value="3">Inmóvil</option>
+        </select>
+      </label>
+      <label><strong>Humedad R/A Incontinencia:</strong>
+        <select name="humedad">
+          <option value="0">No</option>
+          <option value="1">Urinaria o fecal ocasional</option>
+          <option value="2">Urinaria o fecal habitual</option>
+          <option value="3">Urinaria y fecal</option>
+        </select>
+      </label>
+      <label><strong>Nutrición:</strong>
+        <select name="nutricion">
+          <option value="0">Correcta</option>
+          <option value="1">Ocasionalmente incompleta</option>
+          <option value="2">Incompleta</option>
+          <option value="3">No ingesta</option>
+        </select>
+      </label>
+      <label><strong>Actividad:</strong>
+        <select name="actividad">
+          <option value="0">Deambula</option>
+          <option value="1">Deambula con ayuda</option>
+          <option value="2">Siempre precisa ayuda</option>
+          <option value="3">No deambula</option>
+        </select>
+      </label>
+      <button type="button" onclick="calcularEmina()">Calcular EMINA</button>
+    </form>
+    <div class="result none" id="emina-resultado"></div>
+  </div>
+
+  <div class="form-section" id="seccion-braden">
+    <h2>Escala BRADEN Q</h2>
+    <form id="braden-form">
+      <label><strong>Percepción sensorial:</strong>
+        <select name="sensorial">
+          <option value="1">Completamente limitada</option>
+          <option value="2">Muy limitada</option>
+          <option value="3">Ligeramente limitada</option>
+          <option value="4">Sin limitaciones</option>
+        </select>
+      </label>
+      <label><strong>Exposición a humedad:</strong>
+        <select name="humedad">
+          <option value="1">Constantemente húmeda</option>
+          <option value="2">Frecuentemente húmeda</option>
+          <option value="3">Ocasionalmente húmeda</option>
+          <option value="4">Raramente húmeda</option>
+        </select>
+      </label>
+      <label><strong>Actividad:</strong>
+        <select name="actividad">
+          <option value="1">Encamado</option>
+          <option value="2">En silla</option>
+          <option value="3">Deambula ocasionalmente</option>
+          <option value="4">Deambula frecuentemente</option>
+        </select>
+      </label>
+      <label><strong>Movilidad:</strong>
+        <select name="movilidad">
+          <option value="1">Completamente inmóvil</option>
+          <option value="2">Muy limitada</option>
+          <option value="3">Ligeramente limitada</option>
+          <option value="4">Sin limitaciones</option>
+        </select>
+      </label>
+      <label><strong>Nutrición:</strong>
+        <select name="nutricion">
+          <option value="1">Muy pobre</option>
+          <option value="2">Probablemente inadecuada</option>
+          <option value="3">Adecuada</option>
+          <option value="4">Excelente</option>
+        </select>
+      </label>
+      <label><strong>Fricción o Riesgo cutáneo:</strong>
+        <select name="friccion">
+          <option value="1">Problema</option>
+          <option value="2">Problema potencial</option>
+          <option value="3">No existe problema aparente</option>
+        </select>
+      </label>
+      <label><strong>Perfusión/Oxigenación:</strong>
+        <select name="oxigenacion">
+          <option value="1">Muy comprometida</option>
+          <option value="2">Comprometida</option>
+          <option value="3">Adecuada</option>
+          <option value="4">Excelente</option>
+        </select>
+      </label>
+      <button type="button" onclick="calcularBraden()">Calcular BRADEN Q</button>
+    </form>
+    <div class="result none" id="braden-resultado"></div>
+  </div>
+</div>
+
+<script>
+function mostrarEscala() {
+  const seleccion = document.getElementById("selectorEscala").value;
+  document.getElementById("seccion-emina").style.display = (seleccion === "emina") ? 'block' : 'none';
+  document.getElementById("seccion-braden").style.display = (seleccion === "braden") ? 'block' : 'none';
+}
+
+function calcularEmina() {
+  const eminaForm = document.forms['emina-form'];
+  let eminaTotal = 0;
+  for (let elem of eminaForm.elements) {
+    if (elem.tagName === 'SELECT') eminaTotal += parseInt(elem.value);
+  }
+  const resultado = document.getElementById("emina-resultado");
+  resultado.className = 'result';
+  let riesgo = "";
+  if (eminaTotal === 0) {
+    riesgo = "Sin riesgo";
+    resultado.classList.add("none");
+  } else if (eminaTotal <= 3) {
+    riesgo = "Riesgo bajo";
+    resultado.classList.add("low");
+  } else if (eminaTotal <= 7) {
+    riesgo = "Riesgo moderado";
+    resultado.classList.add("moderate");
+  } else {
+    riesgo = "Riesgo alto";
+    resultado.classList.add("high");
+  }
+  resultado.innerText = `Total EMINA: ${eminaTotal} (${riesgo})`;
+}
+
+function calcularBraden() {
+  const bradenForm = document.forms['braden-form'];
+  let bradenTotal = 0;
+  for (let elem of bradenForm.elements) {
+    if (elem.tagName === 'SELECT') bradenTotal += parseInt(elem.value);
+  }
+  const resultado = document.getElementById("braden-resultado");
+  resultado.className = 'result';
+  let riesgo = "";
+  if (bradenTotal <= 12) {
+    riesgo = "Riesgo alto";
+    resultado.classList.add("high");
+  } else if (bradenTotal <= 14) {
+    riesgo = "Riesgo moderado";
+    resultado.classList.add("moderate");
+  } else {
+    riesgo = "Riesgo bajo";
+    resultado.classList.add("low");
+  }
+  resultado.innerText = `Total Braden Q: ${bradenTotal} (${riesgo})`;
+}
+</script>
+</body>
+</html>
